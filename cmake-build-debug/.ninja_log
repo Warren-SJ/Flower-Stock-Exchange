@@ -1,0 +1,13 @@
+# ninja log v6
+3	185	7492515553243411	CMakeFiles/Flower_Stock_Exchange.dir/main.cpp.obj.ddi	402e1f92e467aa6c
+185	227	7492515555442670	CMakeFiles/Flower_Stock_Exchange.dir/CXX.dd	18dc6ddb81b3f4b6
+185	227	7492515555442670	D:/UoM/LSEGC++/Flower-Stock-Exchange/cmake-build-debug/CMakeFiles/Flower_Stock_Exchange.dir/CXXModules.json	18dc6ddb81b3f4b6
+185	227	7492515555442670	CMakeFiles/Flower_Stock_Exchange.dir/main.cpp.obj.modmap	18dc6ddb81b3f4b6
+232	1036	7492515555524543	CMakeFiles/Flower_Stock_Exchange.dir/main.cpp.obj	299e5564a1af3179
+1037	1156	7492515563575667	Flower_Stock_Exchange.exe	cb71479851465634
+8	1251	7492516029044624	CMakeFiles/Flower_Stock_Exchange.dir/main.cpp.obj.ddi	402e1f92e467aa6c
+1251	1275	7492516041467679	CMakeFiles/Flower_Stock_Exchange.dir/CXX.dd	18dc6ddb81b3f4b6
+1251	1275	7492516041467679	D:/UoM/LSEGC++/Flower-Stock-Exchange/cmake-build-debug/CMakeFiles/Flower_Stock_Exchange.dir/CXXModules.json	18dc6ddb81b3f4b6
+1251	1275	7492516041467679	CMakeFiles/Flower_Stock_Exchange.dir/main.cpp.obj.modmap	18dc6ddb81b3f4b6
+1276	2105	7492516041720682	CMakeFiles/Flower_Stock_Exchange.dir/main.cpp.obj	299e5564a1af3179
+2106	2326	7492516050017475	Flower_Stock_Exchange.exe	cb71479851465634
