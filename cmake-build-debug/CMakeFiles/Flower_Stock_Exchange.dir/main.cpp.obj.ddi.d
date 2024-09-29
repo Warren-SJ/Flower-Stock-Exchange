@@ -1,12 +1,12 @@
 CMakeFiles\Flower_Stock_Exchange.dir\main.cpp.obj.ddi: \
  D:/UoM/LSEGC++/Flower-Stock-Exchange/main.cpp \
- C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/iostream \
+ C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/fstream \
  C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/requires_hosted.h \
  C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/x86_64-w64-mingw32/bits/c++config.h \
  C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/x86_64-w64-mingw32/bits/os_defines.h \
  C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/x86_64-w64-mingw32/bits/cpu_defines.h \
  C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/pstl/pstl_config.h \
- C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/ostream \
+ C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/istream \
  C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/ios \
  C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/iosfwd \
  C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/stringfwd.h \
@@ -137,6 +137,7 @@ CMakeFiles\Flower_Stock_Exchange.dir\main.cpp.obj.ddi: \
  C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/x86_64-w64-mingw32/bits/ctype_inline.h \
  C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/locale_facets.tcc \
  C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/basic_ios.tcc \
+ C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/ostream \
  C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/format \
  C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/array \
  C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/charconv \
@@ -169,5 +170,15 @@ CMakeFiles\Flower_Stock_Exchange.dir\main.cpp.obj.ddi: \
  C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/stl_tempbuf.h \
  C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/unicode-data.h \
  C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/ostream.tcc \
- C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/istream \
- C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/istream.tcc
+ C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/istream.tcc \
+ C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/x86_64-w64-mingw32/bits/basic_file.h \
+ C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/x86_64-w64-mingw32/bits/c++io.h \
+ C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/fstream.tcc \
+ C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/iostream \
+ C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/sstream \
+ C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/sstream.tcc \
+ C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/vector \
+ C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/stl_uninitialized.h \
+ C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/stl_vector.h \
+ C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/stl_bvector.h \
+ C:/Program\ Files\ (x86)/JetBrains/CLion\ 2024.2.2/bin/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/bits/vector.tcc
