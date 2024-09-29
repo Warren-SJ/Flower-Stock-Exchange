@@ -75889,7 +75889,6 @@ int main() {
 
     vector<vector<string>> orders;
     string line;
-
     if (getline(file, line)) {
 
     }
@@ -75902,7 +75901,6 @@ int main() {
         }
         orders.push_back(row);
     }
-
     file.close();
 
 

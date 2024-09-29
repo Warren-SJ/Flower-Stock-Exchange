@@ -17,7 +17,6 @@ int main() {
     // Define a 2D array to store the CSV data
     vector<vector<string>> orders;
     string line;
-    // Store the CSV data from the CSV file to the 2D array
     if (getline(file, line)) {
         // First line is read and discarded as it contains headings
     }
@@ -30,7 +29,6 @@ int main() {
         }
         orders.push_back(row);
     }
-    // close the file after read operation is complete
     file.close();
 
     // Print the data stored in the 2D array
