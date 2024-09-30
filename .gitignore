@@ -1,4 +1,22 @@
+# Ignore build directories
+/build/
+/cmake-build-debug/
 
-/cmake-build-debug
-/cmake-build-debug
-/cmake-build-debug
+# Ignore IDE-specific files (CLion, VSCode, etc.)
+.idea/
+.vscode/
+
+# Ignore system-specific files
+*.DS_Store
+*.exe
+*.log
+
+# Ignore object files
+*.o
+*.obj
+
+# Ignore compiled binaries
+*.out
+*.so
+*.a
+*.dll
