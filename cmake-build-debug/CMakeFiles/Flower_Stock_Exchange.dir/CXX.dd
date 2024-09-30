@@ -1,3 +1,7 @@
 ninja_dyndep_version = 1.0
 build CMakeFiles/Flower_Stock_Exchange.dir/main.cpp.obj: dyndep
 
+build CMakeFiles/Flower_Stock_Exchange.dir/orders.cpp.obj: dyndep
+
+build CMakeFiles/Flower_Stock_Exchange.dir/execution_rep.cpp.obj: dyndep
+
