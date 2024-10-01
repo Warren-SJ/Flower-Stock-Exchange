@@ -8,7 +8,11 @@
 #include <vector>
 #include <string>
 using namespace std;
+struct orderStatus{
+    vector<vector<string>> orders;
+    int status;
+};
 
-vector<vector<string>> get_orders(const string& path);
+orderStatus get_orders(const string& path);
 
 #endif //FLOWER_STOCK_EXCHANGE_ORDERS_H

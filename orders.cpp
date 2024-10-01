@@ -6,13 +6,15 @@
 
 using namespace std;
 
-vector<vector<string>> get_orders(const string& path) {
+orderStatus get_orders(const string& path) {
     ifstream file(path);
     if (!file.is_open()) {
-        cerr << "Error opening file!" << endl;
-        return {};
+        return { {}, 1 };
     }
-
+    // Check if csv file
+    if (path.substr(path.find_last_of('.') + 1) != "csv") {
+        return { {}, 2 };
+    }
     // Define a 2D array to store the CSV data
     vector<vector<string>> orders;
     string line;
@@ -37,5 +39,5 @@ vector<vector<string>> get_orders(const string& path) {
         }
         cout << endl;
     }
-    return orders;
+    return { orders, 0 };
 }
