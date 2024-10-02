@@ -5,34 +5,34 @@
 #ifndef FLOWER_STOCK_EXCHANGE_ACCOUNT_H
 #define FLOWER_STOCK_EXCHANGE_ACCOUNT_H
 
-#include <string>
-#include <vector>
 #include "account_entry.h"
+#include <vector>
+#include <string>
+#include <algorithm>
 
-using namespace std;
 class account {
 public:
-    // Constructor: Takes account type ("buy" or "sell")
-    account(std::string  account_type);
+    account(const std::string& instrument);
 
-    // Add and remove entries
-    void addEntry(const account_entry& entry);
-    void removeEntry(int order_id);
+    void addBuyEntry(const account_entry& entry);
+    void addSellEntry(const account_entry& entry);
 
-    // Print all entries in the account
-    void printAccount() const;
+    const std::vector<account_entry>& getBuyEntries() const { return buy_entries; }
+    const std::vector<account_entry>& getSellEntries() const { return sell_entries; }
+
+    std::string getInstrument() const;
 
 private:
-    std::string account_type;  // "buy" or "sell"
-    std::vector<account_entry> entries{};
+    std::string instrument;
+    std::vector<account_entry> buy_entries;
+    std::vector<account_entry> sell_entries;
 
-    // Helper function to sort entries
-    void sortEntries();
+    // Helper functions for sorting
+    void sortBuyEntries();
+    void sortSellEntries();
 
-    void addEntry(const account_entry &entry);
+
 };
-
-#endif  // ACCOUNT_H
 
 
 
