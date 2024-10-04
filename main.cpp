@@ -56,7 +56,44 @@ int main() {
 
         out << "Ord" << i++ << ", " << order_id << ", " << instrument << ", " << side << ", " << "New" << ", " << quantity << ", " << price << endl;
         auto& acc = order_book.emplace(instrument, account(instrument)).first->second; // Get reference to the account
-
+        // Check if the account already exists. If it does, check if the top price is same as new price
+        if(side == 1) {
+            if (!acc.getBuyEntries().empty() && acc.getSellEntries().front().getPrice() <= price) {
+                // Execute the trade
+                if (acc.getSellEntries().front().getQuantity() <= quantity){
+                    quantity -= acc.getBuyEntries().front().getQuantity();
+                    acc.popFrontSellEntries();
+                    out << "Ord" << i++ << ", " << order_id << ", " << instrument << ", " << side << ", " << "Fill" << ", " << price << ", " << quantity << endl;
+                    account_entry entry(order_id, price, quantity);
+                    acc.addBuyEntry(entry);
+                }
+                else{
+                    acc.replaceEntry(account_entry(order_id, price, acc.getBuyEntries().front().getQuantity() - quantity), 1);
+                    out << "Ord" << i++ << ", " << order_id << ", " << instrument << ", " << side << ", " << "PFill" << ", " << price << ", " << quantity << endl;
+                    account_entry entry(order_id, price, quantity);
+                    acc.addBuyEntry(entry);
+                    quantity = 0;
+                }
+            }
+        } else {
+            if (!acc.getBuyEntries().empty() && acc.getBuyEntries().front().getPrice() >= price) {
+                // Execute the trade
+                if (acc.getBuyEntries().front().getQuantity() <= quantity){
+                    quantity -= acc.getBuyEntries().front().getQuantity();
+                    acc.popFrontBuyEntries();
+                    out << "Ord" << i++ << ", " << order_id << ", " << instrument << ", " << side << ", " << "Fill" << ", " << price << ", " << quantity << endl;
+                    account_entry entry(order_id, price, quantity);
+                    acc.addSellEntry(entry);
+                }
+                else{
+                    acc.replaceEntry(account_entry(order_id, price, acc.getBuyEntries().front().getQuantity() - quantity), 2);
+                    out << "Ord" << i++ << ", " << order_id << ", " << instrument << ", " << side << ", " << "PFill" << ", " << price << ", " << quantity << endl;
+                    account_entry entry(order_id, price, quantity);
+                    acc.addSellEntry(entry);
+                    quantity = 0;
+                }
+            }
+        }
         // Create the account entry
         account_entry entry(order_id, price, quantity);
 

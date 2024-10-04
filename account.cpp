@@ -29,6 +29,23 @@ void account::sortSellEntries() {
                   return a.getPrice() < b.getPrice();  // Sort in ascending order
               });
 }
+void account::popFrontBuyEntries() {
+    buy_entries.erase(buy_entries.begin());
+}
+
+void account::popFrontSellEntries() {
+    sell_entries.erase(sell_entries.begin());
+}
+
+void account::replaceEntry(const account_entry& entry, int side) {
+    if (side == 1) {
+        buy_entries.erase(buy_entries.begin());
+        addBuyEntry(entry);
+    } else {
+        sell_entries.erase(sell_entries.begin());
+        addSellEntry(entry);
+    }
+}
 //Getter
 std::string account::getInstrument() const {
     return instrument;

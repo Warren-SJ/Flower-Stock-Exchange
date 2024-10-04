@@ -23,6 +23,12 @@ public:
 
     std::string getInstrument() const;
 
+    void popFrontBuyEntries();
+    void popFrontSellEntries();
+
+
+    void replaceEntry(const account_entry &entry, int side);
+
 private:
     std::string instrument;
     std::vector<account_entry> buy_entries;

@@ -1,14 +1,5 @@
 Client Order ID,	Instrument,	Side,	Quantity,	Price,	TraderID
-aa14,	Rose,	2,	50,	97.00,	TR03
-aa13,	Rose,	1,	50,	55.00,	TR05
-aa14,	Rose,	2,	50,	55.00,	TR03
-aa14,	Sunflower,	2,	50,	10.00,	TR03
-aa13,	Rose,	1,	50,	42.00,	TR05
-aa13,	Rose,	1,	50,	79.00,	TR05
-aa14,	Rose,	2,	50,	52.00,	TR03
-aa13,	Rose,	1,	50,	63.00,	TR05
-aa14,	Sunflower,	2,	50,	42.00,	TR03
-aa14,	Rose,	2,	50,	12.00,	TR03
-aa14,	Rose,	2,	50,	142.00,	TR03
-aa14,	Sunflower,	2,	50,	41.00,	TR03
-aa14,	Sunflower,	1,	50,	142.00,	TR03
+aa14,	Rose,	1, 100, 55
+aa13, Rose,1,100,65
+aa15,Rose,2,300,1
+aa16,Rose,1,100,2

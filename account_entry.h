@@ -14,6 +14,7 @@ public:
     std::string getClientOrderID() const { return client_order_id; }
     double getPrice() const { return price; }
     int getQuantity() const { return quantity; }
+    void setQuantity(int quantity) { this->quantity = quantity; }
 
 private:
     std::string order_id;
