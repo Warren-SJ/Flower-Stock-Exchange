@@ -9,14 +9,15 @@
 
 class account_entry {
 public:
-    account_entry(const std::string& order_id, double price, int quantity);
+    account_entry(const std::string& client_order_id, double price, int quantity);
 
-    std::string getOrderID() const { return order_id; }
+    std::string getClientOrderID() const { return client_order_id; }
     double getPrice() const { return price; }
     int getQuantity() const { return quantity; }
 
 private:
     std::string order_id;
+    std::string client_order_id;
     double price;
     int quantity;
 };

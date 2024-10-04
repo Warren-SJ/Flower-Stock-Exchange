@@ -14,6 +14,7 @@ class account {
 public:
     account(const std::string& instrument);
 
+
     void addBuyEntry(const account_entry& entry);
     void addSellEntry(const account_entry& entry);
 
