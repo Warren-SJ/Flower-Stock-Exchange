@@ -38,6 +38,8 @@ int main() {
         }
     };
 
+    vector<vector<string>> execution_rep;
+
 //string output_path = path.substr(0, path.find_last_of('/', path.find_last_of('/') + 1)) + "execution_rep.csv";
     ofstream out("execution_rep.csv");
     if (!out.is_open()) {
@@ -54,71 +56,116 @@ int main() {
         int quantity = stoi(row[3]);
         double price = stod(row[4]);
 
-        out << "Ord" << i++ << ", " << order_id << ", " << instrument << ", " << side << ", " << "New" << ", " << quantity << ", " << price << endl;
+        execution_rep.push_back({"Ord" + to_string(i),order_id, instrument, to_string(side), "New", to_string(quantity), to_string(price)});
         auto& acc = order_book.emplace(instrument, account(instrument)).first->second; // Get reference to the account
+        cout << acc.getInstrument() << endl;
+        cout <<"Before" << acc.getBuyEntries().size() << " " << acc.getSellEntries().size() << endl;
+        string previous_order_id;
+
+
         // Check if the account already exists. If it does, check if the top price is same as new price
-        if(side == 1) {
-            if (!acc.getBuyEntries().empty() && acc.getSellEntries().front().getPrice() <= price) {
+        if(side == 1) { // If it is a buy entry
+            if (!acc.getSellEntries().empty()) { // If the top sell entry is less than or equal to the new price
+                previous_order_id = acc.getSellEntries().front().getClientOrderID();
                 // Execute the trade
-                if (acc.getSellEntries().front().getQuantity() <= quantity){
-                    quantity -= acc.getBuyEntries().front().getQuantity();
-                    acc.popFrontSellEntries();
-                    out << "Ord" << i++ << ", " << order_id << ", " << instrument << ", " << side << ", " << "Fill" << ", " << price << ", " << quantity << endl;
-                    account_entry entry(order_id, price, quantity);
-                    acc.addBuyEntry(entry);
+                if (price > acc.getSellEntries().front().getPrice()){
+                    price = acc.getSellEntries().front().getPrice();
+                    if (acc.getSellEntries().front().getQuantity() > quantity){
+                        acc.replaceEntry(account_entry(acc.getSellEntries().front().getClientOrderID(), acc.getSellEntries().front().getPrice(), acc.getSellEntries().front().getQuantity() - quantity), 2);
+                        out << "Ord" << i << ", " << order_id << ", " << instrument << ", " << side << ", " << "Fill" << ", " << price << ", " << quantity << endl;
+                        out << "Ord" << i++ << ", " << previous_order_id << ", " << instrument << ", " << 2 << ", " << "Fill" << ", " << price << ", " << quantity << endl;
+//                  execution_rep.push_back({"Ord" + to_string(i),order_id, instrument, row[2], "Fill", row[3], row[4]});
+                        account_entry entry(order_id, price, quantity - acc.getSellEntries().front().getQuantity());
+                        acc.addBuyEntry(entry);
+                    }
+                    else if (acc.getSellEntries().front().getQuantity() == quantity){
+                        acc.popFrontSellEntries();
+                        out << "Ord" << i++ << ", " << order_id << ", " << instrument << ", " << side << ", " << "Fill" << ", " << price << ", " << quantity << endl;
+                        out << "Ord" << i++ << ", " << previous_order_id << ", " << instrument << ", " << 2 << ", " << "Fill" << ", " << price << ", " << quantity << endl;
+                    }
+                    else{
+                        acc.popFrontSellEntries();
+                        out << "Ord" << i++ << ", " << previous_order_id << ", " << instrument << ", " << 2 << ", " << "Fill" << ", " << quantity << ", " << price << endl;
+                        out << "Ord" << i++ << ", " << order_id << ", " << instrument << ", " << side << ", " << "PFill" << ", " << quantity << ", " << price << endl;
+                        account_entry entry(order_id, price, quantity - acc.getSellEntries().front().getQuantity());
+                        acc.addBuyEntry(entry);
+                    }
                 }
                 else{
-                    acc.replaceEntry(account_entry(order_id, price, acc.getBuyEntries().front().getQuantity() - quantity), 1);
-                    out << "Ord" << i++ << ", " << order_id << ", " << instrument << ", " << side << ", " << "PFill" << ", " << price << ", " << quantity << endl;
                     account_entry entry(order_id, price, quantity);
                     acc.addBuyEntry(entry);
-                    quantity = 0;
+                    out << "Ord" << i++ << ", " << order_id << ", " << instrument << ", " << side << ", " << "New" << ", " << quantity << ", " << price << endl;
                 }
+            }
+            else{
+                account_entry entry(order_id, price, quantity);
+                acc.addBuyEntry(entry);
+                cout <<"Empty Sell Triggered" << endl;
+                out << "Ord" << i++ << ", " << order_id << ", " << instrument << ", " << side << ", " << "New" << ", " << quantity << ", " << price << endl;
             }
         } else {
-            if (!acc.getBuyEntries().empty() && acc.getBuyEntries().front().getPrice() >= price) {
+            if (!acc.getBuyEntries().empty()) { // If the top sell entry is less than or equal to the new price
+                previous_order_id = acc.getBuyEntries().front().getClientOrderID();
                 // Execute the trade
-                if (acc.getBuyEntries().front().getQuantity() <= quantity){
-                    quantity -= acc.getBuyEntries().front().getQuantity();
-                    acc.popFrontBuyEntries();
-                    out << "Ord" << i++ << ", " << order_id << ", " << instrument << ", " << side << ", " << "Fill" << ", " << price << ", " << quantity << endl;
-                    account_entry entry(order_id, price, quantity);
-                    acc.addSellEntry(entry);
+                if (price < acc.getBuyEntries().front().getPrice()) {
+                    price = acc.getBuyEntries().front().getPrice();
+                    if (acc.getBuyEntries().front().getQuantity() > quantity){
+                        acc.replaceEntry(account_entry(acc.getBuyEntries().front().getClientOrderID(), acc.getBuyEntries().front().getPrice(), acc.getBuyEntries().front().getQuantity() - quantity), 1);
+                        cout <<"No 1"<<endl;
+                        out << "Ord" << i << ", " << order_id << ", " << instrument << ", " << side << ", " << "Fill" << ", " << quantity << ", " << price << endl;
+                        out << "Ord" << i++ << ", " << previous_order_id << ", " << instrument << ", " << 1 << ", " << "Fill" << ", " << quantity << ", " << price << endl;
+//                  execution_rep.push_back({"Ord" + to_string(i),order_id, instrument, row[2], "Fill", row[3], row[4]});
+                        account_entry entry(order_id, price, quantity - acc.getBuyEntries().front().getQuantity());
+                        acc.addSellEntry(entry);
+                    }
+                    else if (acc.getBuyEntries().front().getQuantity() == quantity){
+                        acc.popFrontBuyEntries();
+                        cout <<"No 2"<<endl;
+                        out << "Ord" << i++ << ", " << order_id << ", " << instrument << ", " << side << ", " << "Fill" << ", " << quantity << ", " << price << endl;
+                        out << "Ord" << i++ << ", " << previous_order_id << ", " << instrument << ", " << 1 << ", " << "Fill" << ", " << quantity << ", " << price << endl;
+                    }
+                    else{
+                        acc.popFrontBuyEntries();
+                        cout <<"No 3"<<endl;
+                        out << "Ord" << i++ << ", " << previous_order_id << ", " << instrument << ", " << 1 << ", " << "Fill" << ", " << quantity << ", " << price << endl;
+                        out << "Ord" << i++ << ", " << order_id << ", " << instrument << ", " << side << ", " << "PFill" << ", " << quantity << ", " << price << endl;
+                        account_entry entry(order_id, price, quantity - acc.getBuyEntries().front().getQuantity());
+                        acc.addSellEntry(entry);
+                    }
                 }
                 else{
-                    acc.replaceEntry(account_entry(order_id, price, acc.getBuyEntries().front().getQuantity() - quantity), 2);
-                    out << "Ord" << i++ << ", " << order_id << ", " << instrument << ", " << side << ", " << "PFill" << ", " << price << ", " << quantity << endl;
                     account_entry entry(order_id, price, quantity);
                     acc.addSellEntry(entry);
-                    quantity = 0;
+                    cout <<"No 4"<<endl;
+                    out << "Ord" << i++ << ", " << order_id << ", " << instrument << ", " << side << ", " << "New" << ", " << quantity << ", " << price << endl;
                 }
+
+            }
+            else{
+                account_entry entry(order_id, price, quantity);
+                acc.addSellEntry(entry);
+                cout <<"No 5"<<endl;
+                cout <<"Empty Buy Triggered" << endl;
+                out << "Ord" << i++ << ", " << order_id << ", " << instrument << ", " << side << ", " << "New" << ", " << quantity << ", " << price << endl;
             }
         }
-        // Create the account entry
-        account_entry entry(order_id, price, quantity);
+        cout << "After" << acc.getBuyEntries().size() << " " << acc.getSellEntries().size() << endl;
 
-        // Add entry to the appropriate side
-        if (side == 1) {  // Buy side
-            acc.addBuyEntry(entry);  // Now using the reference to the account
-        } else {  // Sell side
-            acc.addSellEntry(entry);  // Using the reference
-        }
     }
-
 
 
 
     // Print the order book
 
     for (const auto& [instrument, acc] : order_book) {
-        cout << "Instrument: " << instrument << endl;
-        cout << "Buy Entries: " << endl;
+//        cout << "Instrument: " << instrument << endl;
+//        cout << "Buy Entries: " << endl;
         for (const auto& entry : acc.getBuyEntries()) {
-            cout << entry.getClientOrderID() << " " << entry.getPrice() << " " << entry.getQuantity() << endl;
+//            cout << entry.getClientOrderID() << " " << entry.getPrice() << " " << entry.getQuantity() << endl;
         }
-        cout << "Sell Entries: " << endl;
+//        cout << "Sell Entries: " << endl;
         for (const auto& entry : acc.getSellEntries()) {
-            cout << entry.getClientOrderID() << " " << entry.getPrice() << " " << entry.getQuantity() << endl;
+//            cout << entry.getClientOrderID() << " " << entry.getPrice() << " " << entry.getQuantity() << endl;
         }
     }
     // Write the order book to a file

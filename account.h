@@ -10,18 +10,19 @@
 #include <string>
 #include <algorithm>
 
+using namespace std;
 class account {
 public:
-    account(const std::string& instrument);
+    account(const string& instrument);
 
 
     void addBuyEntry(const account_entry& entry);
     void addSellEntry(const account_entry& entry);
 
-    const std::vector<account_entry>& getBuyEntries() const { return buy_entries; }
-    const std::vector<account_entry>& getSellEntries() const { return sell_entries; }
+    const vector<account_entry>& getBuyEntries() const { return buy_entries; }
+    const vector<account_entry>& getSellEntries() const { return sell_entries; }
 
-    std::string getInstrument() const;
+    string getInstrument() const;
 
     void popFrontBuyEntries();
     void popFrontSellEntries();
@@ -30,9 +31,9 @@ public:
     void replaceEntry(const account_entry &entry, int side);
 
 private:
-    std::string instrument;
-    std::vector<account_entry> buy_entries;
-    std::vector<account_entry> sell_entries;
+    string instrument;
+    vector<account_entry> buy_entries;
+    vector<account_entry> sell_entries;
 
     // Helper functions for sorting
     void sortBuyEntries();
