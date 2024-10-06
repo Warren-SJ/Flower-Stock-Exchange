@@ -7,11 +7,14 @@
 
 #include <string>
 
+using namespace std;
+
 class account_entry {
 public:
-    account_entry(const std::string& client_order_id, double price, int quantity);
+    account_entry(const string& client_order_id, const string&order_id, double price, int quantity);
 
-    std::string getClientOrderID() const { return client_order_id; }
+    string getClientOrderID() const { return client_order_id; }
+    string getOrderID() const { return order_id; }
     double getPrice() const { return price; }
     int getQuantity() const { return quantity; }
     void setQuantity(int quantity) { this->quantity = quantity; }
