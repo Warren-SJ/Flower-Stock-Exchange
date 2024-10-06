@@ -1,6 +1,5 @@
 #include "orders.h"
 #include <fstream>
-#include <iostream>
 #include <sstream>
 #include <vector>
 
@@ -31,13 +30,5 @@ orderStatus get_orders(const string& path) {
         orders.push_back(row);
     }
     file.close();
-
-    // Print the data stored in the 2D array
-//    for (const auto& row : orders) {
-//        for (const auto& cell : row) {
-//            cout << cell << " ";
-//        }
-//        cout << endl;
-//    }
     return { orders, 0 };
 }

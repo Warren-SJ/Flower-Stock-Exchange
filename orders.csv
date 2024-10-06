@@ -1,4 +1,4 @@
 Client Order ID,	Instrument,	Side,	Quantity,	Price,	TraderID
-aa13,Rose,1,100,55
-aa14,Rose,1,100,65
-aa15,Rose,2,300,1
+aa13,,1,100,55
+aa13,Rose,1,10000,65
+aa15,Rose,2,300,-85

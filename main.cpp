@@ -46,8 +46,9 @@ int main() {
         return 1;
     }
     int order_number = 0;
-    out << "Order ID, Client Order ID, Instrument, Side, Exec Status, Price, Quantity" << endl;
+    out << "Order ID, Client Order ID, Instrument, Side, Exec Status, Price, Quantity, Reason" << endl;
     unordered_map<string, account, AccountHash, AccountEqual> order_book;
+    vector<string>client_order_id_history;
     for (const auto& row : orders.orders) {
         std::string client_order_id = row[0];
         std::string instrument = row[1];
@@ -59,13 +60,34 @@ int main() {
         string previous_order_id;
         ++order_number;
 
+        if(client_order_id.empty()){
+            out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << side << ", " << "Reject" << ", " << quantity << ", " << price << ',' << "Invalid client order ID" << endl;
+            continue;
+        }
+        if (find(client_order_id_history.begin(), client_order_id_history.end(), client_order_id) != client_order_id_history.end()){
+            out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << side << ", " << "Reject" << ", " << quantity << ", " << price << ',' << "Duplicate client order ID" << endl;
+            continue;
+        }
         if (find(flowers.begin(), flowers.end(), instrument) == flowers.end()){
-            instrument = "Invalid";
+            out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << side << ", " << "Reject" << ", " << quantity << ", " << price << ',' << "Invalid instrument" << endl;
+            continue;
+        }
+        if(side != 1 && side != 2){
+            out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << side << ", " << "Reject" << ", " << quantity << ", " << price << ',' << "Invalid side" << endl;
+            continue;
+        }
+        if(quantity <= 0 || quantity > 1000 || quantity % 10 != 0){
+            out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << side << ", " << "Reject" << ", " << quantity << ", " << price << ',' << "Invalid size" << endl;
+            continue;
+        }
+        if (price <= 0){
+            out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << side << ", " << "Reject" << ", " << quantity << ", " << price << ',' << "Invalid price" << endl;
+            continue;
         }
 
         // Check if the account already exists. If it does, check if the top price is same as new price
         if(side == 1) { // If it is a buy entry
-            if (!acc.getSellEntries().empty() && quantity > 0) { // If the top sell entry is less than or equal to the new price
+            while (!acc.getSellEntries().empty() && quantity > 0) { // If the top sell entry is less than or equal to the new price
                 // Execute the trade
                 if (price >= acc.getSellEntries().front().getPrice()){
                     new_price = acc.getSellEntries().front().getPrice();
@@ -89,8 +111,7 @@ int main() {
                         quantity -= acc.getSellEntries().front().getQuantity();
                         acc.popFrontSellEntries();
                     }
-                }
-                else{
+                }else{
                     account_entry entry(client_order_id, order_number, price, quantity);
                     acc.addBuyEntry(entry);
                     out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << side << ", " << "New" << ", " << quantity << ", " << price << endl;
@@ -102,7 +123,7 @@ int main() {
                 account_entry entry(client_order_id, order_number, price, quantity);
                 acc.addBuyEntry(entry);
             }
-        } else if (side == 2) { // If it is a sell entry
+        } else { // If it is a sell entry
             while (!acc.getBuyEntries().empty() && quantity > 0) { // If the top sell entry is less than or equal to the new price
                 // Execute the trade
                 if (price <= acc.getBuyEntries().front().getPrice()) {
@@ -140,8 +161,6 @@ int main() {
                 acc.addSellEntry(entry);
                 out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << side << ", " << "New" << ", " << quantity << ", " << price << endl;
             }
-        }else{ // Handle wrong side
-            out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << side << ", " << "Reject" << ", " << quantity << ", " << price <<"Invalid side" << endl;
         }
     }
 
