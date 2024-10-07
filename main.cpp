@@ -35,6 +35,7 @@ int main() {
     string path;
     cin >> path;
     replace(path.begin(), path.end(), '\\', '/'); // For Windows path
+    auto start_time = chrono::system_clock::now();
     orderStatus orders = get_orders(path);
     if (orders.status == 1) {
         cerr << "Error Opening File" << endl;
@@ -82,7 +83,9 @@ int main() {
         auto& acc = order_book.emplace(instrument, account(instrument)).first->second; // Get reference to the account
         string previous_order_id;
         ++order_number;
+        bool added = false;
 
+        //validations
         if(client_order_id.empty()){
             out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << side << ", " << "Reject" << ", " << quantity << ", " << price << ',' << "Invalid client order ID," << getCurrentTimeFormatted()<<endl;
             continue;
@@ -108,11 +111,12 @@ int main() {
             continue;
         }
 
-        // Check if the account already exists. If it does, check if the top price is same as new price
+
         if(side == 1) { // If it is a buy entry
-            while (!acc.getSellEntries().empty() && quantity > 0) { // If the top sell entry is less than or equal to the new price
+            while (!acc.getSellEntries().empty() && quantity > 0) { // Recursively check
                 // Execute the trade
                 if (price >= acc.getSellEntries().front().getPrice()){
+                    added = true;
                     new_price = acc.getSellEntries().front().getPrice();
                     if (acc.getSellEntries().front().getQuantity() > quantity){
                         out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << side << ", " << "Fill" << ", " << quantity << ", " <<new_price << endl;
@@ -123,7 +127,7 @@ int main() {
                         quantity = 0;
                     }
                     else if (acc.getSellEntries().front().getQuantity() == quantity){
-                        out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << side << ", " << "Fill" << ", " << quantity << ", " << new_price << endl;
+                        out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << side << ", " << "Fill" << ", " << quantity << ", " << new_price << ','<< getCurrentTimeFormatted()<< endl;
                         out << "Ord" << acc.getSellEntries().front().getOrderID() << ", " << acc.getSellEntries().front().getClientOrderID() << ", " << instrument << ", " << 2 << ", " << "Fill" << ", " << quantity << ", " << new_price <<',' << getCurrentTimeFormatted()<<endl;
                         acc.popFrontSellEntries();
                         quantity = 0;
@@ -142,7 +146,11 @@ int main() {
                 }
             }
             if (quantity > 0){
-                out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << side << ", " << "New" << ", " << quantity << ", " << price <<',' << getCurrentTimeFormatted()<<endl;
+                if (!added) {
+                    out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << side
+                        << ", " << "New" << ", " << quantity << ", " << price << ',' << getCurrentTimeFormatted()
+                        << endl;
+                }
                 account_entry entry(client_order_id, order_number, price, quantity);
                 acc.addBuyEntry(entry);
             }
@@ -150,6 +158,7 @@ int main() {
             while (!acc.getBuyEntries().empty() && quantity > 0) { // If the top sell entry is less than or equal to the new price
                 // Execute the trade
                 if (price <= acc.getBuyEntries().front().getPrice()) {
+                    added = true;
                     new_price = acc.getBuyEntries().front().getPrice();
                     if (acc.getBuyEntries().front().getQuantity() > quantity){
                         out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << side << ", " << "Fill" << ", " << acc.getBuyEntries().front().getQuantity() - quantity << ", " << new_price << ',' << getCurrentTimeFormatted() <<endl;
@@ -180,14 +189,15 @@ int main() {
                 }
             }
             if (quantity > 0){
+                if (!added){
+                    out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << side << ", " << "New" << ", " << quantity << ", " << price << ',' << getCurrentTimeFormatted()<<endl;
+                }
                 account_entry entry(client_order_id, order_number, price, quantity);
                 acc.addSellEntry(entry);
-                out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << side << ", " << "New" << ", " << quantity << ", " << price << ',' <<getCurrentTimeFormatted()<<endl;
             }
         }
     }
 
-    out.close();
     // Print the order book
 
     for (const auto& [instrument, acc] : order_book) {
@@ -201,7 +211,14 @@ int main() {
             cout << entry.getClientOrderID() << " " << entry.getPrice() << " " << entry.getQuantity() << endl;
         }
     }
-    // Write the order book to a file
+    auto end_time = chrono::system_clock::now();
+
+    chrono::duration<double> elapsed_seconds = end_time - start_time;
+
+    auto elapsed_milliseconds = chrono::duration_cast<chrono::milliseconds>(elapsed_seconds);
+    out << "Elapsed Time:" << elapsed_milliseconds.count() <<"milliseconds"<<endl;
+    out.close();
+
 
     return 0;
 }

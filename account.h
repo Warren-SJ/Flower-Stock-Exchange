@@ -13,16 +13,16 @@
 using namespace std;
 class account {
 public:
-    account(const string& instrument);
+    account(string  instrument);
 
 
     void addBuyEntry(const account_entry& entry);
     void addSellEntry(const account_entry& entry);
 
-    const vector<account_entry>& getBuyEntries() const { return buy_entries; }
-    const vector<account_entry>& getSellEntries() const { return sell_entries; }
+    [[nodiscard]] const vector<account_entry>& getBuyEntries() const { return buy_entries; }
+    [[nodiscard]] const vector<account_entry>& getSellEntries() const { return sell_entries; }
 
-    string getInstrument() const;
+    [[nodiscard]] string getInstrument() const;
 
     void popFrontBuyEntries();
     void popFrontSellEntries();

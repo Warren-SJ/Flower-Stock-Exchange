@@ -4,7 +4,9 @@
 
 #include "account.h"
 
-account::account(const std::string& instrument) : instrument(instrument) {}
+#include <utility>
+
+ account::account(std::string  instrument) : instrument(std::move(instrument)) {}
 
 void account::addBuyEntry(const account_entry& entry) {
     buy_entries.push_back(entry);
