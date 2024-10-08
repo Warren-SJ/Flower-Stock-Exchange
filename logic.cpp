@@ -1,46 +1,23 @@
 //
-// Created by warre on 08-Oct-24.
+// Created by warren on 08-Oct-24.
 //
 
 #include "logic.h"
 #include "account.h"
 #include "account_entry.h"
 #include "orders.h"
+#include "helpers.h"
 #include <iostream>
 #include <fstream>
 #include <unordered_map>
 #include <vector>
 #include <string>
-#include "chrono"
-#include <iomanip>
-#include <ctime>
 
 using namespace std;
 
-
-string getCurrentTimeFormatted() {
-    // Get the current time
-    auto now = chrono::system_clock::now();
-    auto currentTime = chrono::system_clock::to_time_t(now);
-
-    // Convert to tm structure for local time
-    tm localTime = *localtime(&currentTime);
-
-    // Get the milliseconds part
-    auto duration = now.time_since_epoch();
-    auto millis = chrono::duration_cast<chrono::milliseconds>(duration) % 1000;
-
-    // Format the time as YYYYMMDD-HHMMSS.sss
-    ostringstream oss;
-    oss << put_time(&localTime, "%Y%m%d-%H%M%S")
-        << '.' << std::setfill('0') << std::setw(3) << millis.count();
-
-    return oss.str();
-}
-
 vector<string> flowers = {"Rose", "Lavender", "Lotus", "Tulip", "Daisy", "Orchid"};
 
-unordered_map<string, account, AccountHash, AccountEqual> process_orders(orderStatus orders){
+unordered_map<string, account, AccountHash, AccountEqual> process_orders(const orderStatus& orders){
     auto start_time = chrono::system_clock::now();
     ofstream out("execution_rep.csv");
     if (!out.is_open()) {
@@ -64,7 +41,7 @@ unordered_map<string, account, AccountHash, AccountEqual> process_orders(orderSt
         ++order_number;
         bool added = false;
 
-//validations
+        //validations
         if (client_order_id.empty()) {
             out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << side << ", "
                 << "Reject" << ", " << quantity << ", " << price << ',' << "Invalid client order ID,"
@@ -109,7 +86,7 @@ unordered_map<string, account, AccountHash, AccountEqual> process_orders(orderSt
 
         if (side == 1) { // If it is a buy entry
             while (!acc.getSellEntries().empty() && quantity > 0) { // Recursively check
-// Execute the trade
+                // Execute the trade
                 if (price >= acc.getSellEntries().front().getPrice()) {
                     added = true;
                     new_price = acc.getSellEntries().front().getPrice();
@@ -176,7 +153,7 @@ unordered_map<string, account, AccountHash, AccountEqual> process_orders(orderSt
         } else { // If it is a sell entry
             while (!acc.getBuyEntries().empty() &&
                    quantity > 0) { // If the top sell entry is less than or equal to the new price
-// Execute the trade
+                // Execute the trade
                 if (price <= acc.getBuyEntries().front().getPrice()) {
                     added = true;
                     new_price = acc.getBuyEntries().front().getPrice();

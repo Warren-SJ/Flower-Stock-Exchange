@@ -10,4 +10,7 @@ add_executable(Flower_Stock_Exchange main.cpp orders.cpp orders.h
         account.h
         logic.cpp
         logic.h
+        order_book.cpp
+        order_book.h
+        helpers.h
 )

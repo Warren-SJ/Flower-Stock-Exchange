@@ -11,14 +11,14 @@ using namespace std;
 
 class account_entry {
 public:
-    account_entry(const string& client_order_id, int order_id, double price, int quantity);
+    account_entry(string  client_order_id, int order_id, double price, int quantity);
 
 
-    string getClientOrderID() const { return client_order_id; }
-    int getOrderID() const { return order_id; }
-    double getPrice() const { return price; }
-    int getQuantity() const { return quantity; }
-    void setQuantity(int quantity) { this->quantity = quantity; }
+    [[nodiscard]] string getClientOrderID() const { return client_order_id; }
+    [[nodiscard]] int getOrderID() const { return order_id; }
+    [[nodiscard]] double getPrice() const { return price; }
+    [[nodiscard]] int getQuantity() const { return quantity; }
+    void setQuantity(int new_quantity) { this->quantity = new_quantity; }
 
 private:
     string client_order_id;

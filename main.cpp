@@ -1,15 +1,10 @@
-#include <vector>
 #include <iostream>
 #include <unordered_map>
-#include <fstream>
 #include "orders.h"
 #include "account.h"
 #include "account_entry.h"
-#include <iomanip>
-#include <chrono>
-#include <ctime>
 #include "logic.h"
-
+#include "order_book.h"
 
 using namespace std;
 
@@ -32,18 +27,11 @@ int main() {
 
     unordered_map<string, account, AccountHash, AccountEqual> order_book = process_orders(orders);
 
-    // Print the order book
-
-    for (const auto &[instrument, acc]: order_book) {
-        cout << "Instrument: " << instrument << endl;
-        cout << "Buy Entries: " << endl;
-        for (const auto &entry: acc.getBuyEntries()) {
-            cout << entry.getClientOrderID() << " " << entry.getPrice() << " " << entry.getQuantity() << endl;
-        }
-        cout << "Sell Entries: " << endl;
-        for (const auto &entry: acc.getSellEntries()) {
-            cout << entry.getClientOrderID() << " " << entry.getPrice() << " " << entry.getQuantity() << endl;
-        }
+    // Write the order book
+    int written = write_order_book(order_book);
+    if(written == 1) {
+        cerr << "Error writing to file" << endl;
+        return 1;
     }
 
     system("pause");
