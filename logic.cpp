@@ -1,25 +1,25 @@
 //
 // Created by warren on 08-Oct-24.
 //
-
-#include "logic.h"
-#include "account.h"
-#include "account_entry.h"
-#include "orders.h"
-#include "helpers.h"
 #include <iostream>
 #include <fstream>
 #include <unordered_map>
 #include <vector>
 #include <string>
 
+#include "logic.h"
+#include "account.h"
+#include "account_entry.h"
+#include "orders.h"
+#include "helpers.h"
+
 using namespace std;
 
 vector<string> flowers = {"Rose", "Lavender", "Lotus", "Tulip", "Daisy", "Orchid"};
 
-unordered_map<string, account, AccountHash, AccountEqual> process_orders(const orderStatus& orders){
+unordered_map<string, account, AccountHash, AccountEqual> process_orders(const orderStatus& orders, const string& path){
     auto start_time = chrono::system_clock::now();
-    ofstream out("execution_rep.csv");
+    ofstream out(path + "/execution_rep.csv");
     if (!out.is_open()) {
         cerr << "Error opening file for writing" << endl;
         return {};

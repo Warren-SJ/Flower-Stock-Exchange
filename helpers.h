@@ -5,13 +5,13 @@
 #ifndef FLOWER_STOCK_EXCHANGE_HELPERS_H
 #define FLOWER_STOCK_EXCHANGE_HELPERS_H
 
-#include "account.h"
 #include <string>
 #include <chrono>
-#include <iomanip>
-#include <ctime>
+
+#include "account.h"
 
 using namespace std;
+
 struct AccountHash {
     size_t operator()(const account &acc) const {
         return hash<string>()(acc.getInstrument());  // Hash based on instrument name

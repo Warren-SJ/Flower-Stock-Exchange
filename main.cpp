@@ -1,5 +1,6 @@
 #include <iostream>
 #include <unordered_map>
+
 #include "orders.h"
 #include "account.h"
 #include "account_entry.h"
@@ -25,10 +26,16 @@ int main() {
         return 1;
     }
 
-    unordered_map<string, account, AccountHash, AccountEqual> order_book = process_orders(orders);
+    size_t lastSlash = path.find_last_of('/');
+
+    if (lastSlash != string::npos) {
+        path = path.substr(0, lastSlash + 1);
+    }
+
+    unordered_map<string, account, AccountHash, AccountEqual> order_book = process_orders(orders, path);
 
     // Write the order book
-    int written = write_order_book(order_book);
+    int written = write_order_book(order_book, path);
     if(written == 1) {
         cerr << "Error writing to file" << endl;
         return 1;

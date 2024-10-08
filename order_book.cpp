@@ -1,16 +1,17 @@
 //
 // Created by warren on 08-Oct-24.
 //
+#include <fstream>
+#include <iostream>
 
 #include "order_book.h"
 #include "account.h"
-#include <fstream>
-#include <iostream>
 #include "logic.h"
+
 using namespace std;
 
-int write_order_book(const unordered_map<string, account, AccountHash, AccountEqual>& order_book) {
-    ofstream file("orders_book.csv");
+int write_order_book(const unordered_map<string, account, AccountHash, AccountEqual>& order_book, const string& path) {
+    ofstream file(path + "order_book.csv");
 
     if (!file.is_open()) {
         std::cerr << "Failed to open file!" << std::endl;

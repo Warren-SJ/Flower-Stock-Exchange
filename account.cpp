@@ -1,12 +1,13 @@
 //
 // Created by warren on 01-Oct-24.
 //
+#include <algorithm>
 
 #include "account.h"
 
-#include <utility>
+using namespace std;
 
- account::account(std::string  instrument) : instrument(std::move(instrument)) {}
+ account::account(string  instrument) : instrument(std::move(instrument)) {}
 
 void account::addBuyEntry(const account_entry& entry) {
     buy_entries.push_back(entry);
@@ -19,14 +20,14 @@ void account::addSellEntry(const account_entry& entry) {
 }
 
 void account::sortBuyEntries() {
-    std::sort(buy_entries.begin(), buy_entries.end(),
+    sort(buy_entries.begin(), buy_entries.end(),
               [](const account_entry& a, const account_entry& b) {
                   return a.getPrice() > b.getPrice();  // Sort in descending order
               });
 }
 
 void account::sortSellEntries() {
-    std::sort(sell_entries.begin(), sell_entries.end(),
+    sort(sell_entries.begin(), sell_entries.end(),
               [](const account_entry& a, const account_entry& b) {
                   return a.getPrice() < b.getPrice();  // Sort in ascending order
               });
@@ -49,6 +50,6 @@ void account::replaceEntry(const account_entry& entry, int side) {
     }
 }
 //Getter
-std::string account::getInstrument() const {
+string account::getInstrument() const {
     return instrument;
 }

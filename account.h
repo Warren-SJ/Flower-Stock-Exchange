@@ -5,15 +5,16 @@
 #ifndef FLOWER_STOCK_EXCHANGE_ACCOUNT_H
 #define FLOWER_STOCK_EXCHANGE_ACCOUNT_H
 
-#include "account_entry.h"
 #include <vector>
 #include <string>
-#include <algorithm>
+
+#include "account_entry.h"
+
 
 using namespace std;
 class account {
 public:
-    account(string  instrument);
+    account(string instrument);
 
 
     void addBuyEntry(const account_entry& entry);
