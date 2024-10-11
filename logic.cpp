@@ -6,6 +6,8 @@
 #include <unordered_map>
 #include <vector>
 #include <string>
+#include <thread>
+#include <chrono>
 
 #include "logic.h"
 #include "account.h"
@@ -29,11 +31,45 @@ unordered_map<string, account, AccountHash, AccountEqual> process_orders(const o
     unordered_map<string, account, AccountHash, AccountEqual> order_book;
     vector<string> client_order_id_history;
     for (const auto &row: orders.orders) {
-        const std::string& client_order_id = row[0];
-        std::string instrument = row[1];
-        int side = stoi(row[2]);
-        int quantity = stoi(row[3]);
-        double price = stod(row[4]);
+        const std::string &client_order_id = row[0];
+        string instrument = row[1];
+        int side;
+        int quantity;
+        double price;
+        if (row.size() < 5) {
+            out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << "N/A" << ", "
+                << "Reject" << ", " << "N/A" << ", " << "N/A" << ',' << "Incomplete row,"
+                << getCurrentTimeFormatted()
+                << endl;
+            continue;
+        }
+        try {
+            side = stoi(row[2]);
+        } catch (exception &e) {
+            out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << row[2] << ", "
+                << "Reject" << ", " << row[3] << ", " << row[4] << ',' << "Invalid side,"
+                << getCurrentTimeFormatted()
+                << endl;
+            continue;
+        }
+        try {
+            quantity = stoi(row[3]);
+        } catch (exception &e) {
+            out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << side << ", "
+                << "Reject" << ", " << row[3] << ", " << row[4] << ',' << "Invalid size,"
+                << getCurrentTimeFormatted()
+                << endl;
+            continue;
+        }
+        try {
+            price = stod(row[4]);
+        } catch (exception &e) {
+            out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << side << ", "
+                << "Reject" << ", " << row[3] << ", " << row[4] << ',' << "Invalid price,"
+                << getCurrentTimeFormatted()
+                << endl;
+            continue;
+        }
         double new_price;
         auto &acc = order_book.emplace(instrument,
                                        account(instrument)).first->second; // Get reference to the account
@@ -133,10 +169,12 @@ unordered_map<string, account, AccountHash, AccountEqual> process_orders(const o
                 } else {
                     account_entry entry(client_order_id, order_number, price, quantity);
                     acc.addBuyEntry(entry);
-                    out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << side
-                        << ", " << "New" << ", " << quantity << ", " << price << ',' << ','
-                        << getCurrentTimeFormatted()
-                        << endl;
+                    if (!added) {
+                        out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << side
+                            << ", " << "New" << ", " << quantity << ", " << price << ',' << ','
+                            << getCurrentTimeFormatted()
+                            << endl;
+                    }
                     quantity = 0;
                 }
             }
@@ -204,10 +242,12 @@ unordered_map<string, account, AccountHash, AccountEqual> process_orders(const o
                         quantity -= acc.getBuyEntries().front().getQuantity();
                     }
                 } else {
-                    out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << side
-                        << ", " << "New" << ", " << quantity << ", " << price << ',' << ','
-                        << getCurrentTimeFormatted()
-                        << endl;
+                    if (!added) {
+                        out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << side
+                            << ", " << "New" << ", " << quantity << ", " << price << ',' << ','
+                            << getCurrentTimeFormatted()
+                            << endl;
+                    }
                     account_entry entry(client_order_id, order_number, price, quantity);
                     acc.addSellEntry(entry);
                     quantity = 0;

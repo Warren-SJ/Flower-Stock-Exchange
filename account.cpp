@@ -53,3 +53,4 @@ void account::replaceEntry(const account_entry& entry, int side) {
 string account::getInstrument() const {
     return instrument;
 }
+

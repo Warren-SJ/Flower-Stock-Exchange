@@ -18,7 +18,6 @@ public:
     [[nodiscard]] int getOrderID() const { return order_id; }
     [[nodiscard]] double getPrice() const { return price; }
     [[nodiscard]] int getQuantity() const { return quantity; }
-    void setQuantity(int new_quantity) { this->quantity = new_quantity; }
 
 private:
     string client_order_id;

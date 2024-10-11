@@ -3,6 +3,7 @@
 //
 #include <fstream>
 #include <iostream>
+#include <algorithm>
 
 #include "order_book.h"
 #include "account.h"
@@ -27,7 +28,7 @@ int write_order_book(const unordered_map<string, account, AccountHash, AccountEq
         const auto &sellEntries = acc.getSellEntries();
 
 // Determine the max number of entries between buy and sell
-        size_t maxEntries = std::max(buyEntries.size(), sellEntries.size());
+        size_t maxEntries = max(buyEntries.size(), sellEntries.size());
 
 // Write buy and sell entries side by side
         for (size_t i = 0; i < maxEntries; ++i) {
@@ -49,11 +50,11 @@ int write_order_book(const unordered_map<string, account, AccountHash, AccountEq
                 file << ",,";
             }
 
-            file << std::endl;  // Move to next row
+            file << endl;  // Move to next row
         }
     }
 
     file.close();
-    std::cout << "Data written to orders_book.csv" << std::endl;
+    cout << "Data written to orders_book.csv" << endl;
     return 0;
 }
