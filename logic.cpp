@@ -19,7 +19,8 @@ using namespace std;
 
 vector<string> flowers = {"Rose", "Lavender", "Lotus", "Tulip", "Daisy", "Orchid"};
 
-unordered_map<string, account, AccountHash, AccountEqual> process_orders(const orderStatus& orders, const string& path){
+unordered_map<string, account, AccountHash, AccountEqual>
+process_orders(const orderStatus &orders, const string &path) {
     auto start_time = chrono::system_clock::now();
     ofstream out(path + "/execution_rep.csv");
     if (!out.is_open()) {
@@ -70,12 +71,6 @@ unordered_map<string, account, AccountHash, AccountEqual> process_orders(const o
                 << endl;
             continue;
         }
-        double new_price;
-        auto &acc = order_book.emplace(instrument,
-                                       account(instrument)).first->second; // Get reference to the account
-        string previous_order_id;
-        ++order_number;
-        bool added = false;
 
         //validations
         if (client_order_id.empty()) {
@@ -119,6 +114,12 @@ unordered_map<string, account, AccountHash, AccountEqual> process_orders(const o
             continue;
         }
 
+        double new_price;
+        auto &acc = order_book.emplace(instrument,
+                                       account(instrument)).first->second; // Get reference to the account
+        string previous_order_id;
+        ++order_number;
+        bool added = false;
 
         if (side == 1) { // If it is a buy entry
             while (!acc.getSellEntries().empty() && quantity > 0) { // Recursively check
@@ -129,7 +130,8 @@ unordered_map<string, account, AccountHash, AccountEqual> process_orders(const o
                     if (acc.getSellEntries().front().getQuantity() > quantity) {
                         out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", "
                             << side
-                            << ", " << "Fill" << ", " << quantity << ", " << new_price << endl;
+                            << ", " << "Fill" << ", " << quantity << ", " << new_price << ',' << ','
+                            << getCurrentTimeFormatted() << endl;
                         out << "Ord" << acc.getSellEntries().front().getOrderID() << ", "
                             << acc.getSellEntries().front().getClientOrderID() << ", " << instrument << ", " << 2
                             << ", " << "PFill" << ", " << quantity << ", " << new_price << ',' << ','

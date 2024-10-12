@@ -7,7 +7,7 @@
 
 using namespace std;
 
- account::account(string  instrument) : instrument(std::move(instrument)) {}
+account::account(string  instrument) : instrument(std::move(instrument)) {}
 
 void account::addBuyEntry(const account_entry& entry) {
     buy_entries.push_back(entry);
@@ -21,16 +21,16 @@ void account::addSellEntry(const account_entry& entry) {
 
 void account::sortBuyEntries() {
     sort(buy_entries.begin(), buy_entries.end(),
-              [](const account_entry& a, const account_entry& b) {
-                  return a.getPrice() > b.getPrice();  // Sort in descending order
-              });
+         [](const account_entry& a, const account_entry& b) {
+             return a.getPrice() > b.getPrice();  // Sort in descending order
+         });
 }
 
 void account::sortSellEntries() {
     sort(sell_entries.begin(), sell_entries.end(),
-              [](const account_entry& a, const account_entry& b) {
-                  return a.getPrice() < b.getPrice();  // Sort in ascending order
-              });
+         [](const account_entry& a, const account_entry& b) {
+             return a.getPrice() < b.getPrice();  // Sort in ascending order
+         });
 }
 void account::popFrontBuyEntries() {
     buy_entries.erase(buy_entries.begin());
