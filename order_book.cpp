@@ -55,6 +55,5 @@ int write_order_book(const unordered_map<string, account, AccountHash, AccountEq
     }
 
     file.close();
-    cout << "Data written to orders_book.csv" << endl;
     return 0;
 }

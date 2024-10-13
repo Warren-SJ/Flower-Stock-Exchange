@@ -41,6 +41,7 @@ int main() {
         cerr << "Error writing to file" << endl;
         return 1;
     }
+    cout << "Data written to orders_book.csv and execution_rep.csv" << endl;
 
     system("pause");
     return 0;
