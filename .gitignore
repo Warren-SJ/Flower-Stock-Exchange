@@ -1,10 +1,12 @@
 # Ignore build directories
 /build/
 /cmake-build-debug/
+/x64
 
 # Ignore IDE-specific files (CLion, VSCode, etc.)
 .idea/
 .vscode/
+.vs/
 
 # Ignore system-specific files
 *.DS_Store
@@ -21,7 +23,5 @@
 *.a
 *.dll
 /UI
-/.idea
-/x64
+
 /Flower-S.7cbd83c4
-/.vs
