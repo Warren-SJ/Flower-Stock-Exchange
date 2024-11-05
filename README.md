@@ -18,7 +18,7 @@ The requirements for the programs are stated in the presentation.
 
 **Note**: C++20 or later is required to compile the program.
 
-### Instructions
+### Usage
 
 1. Clone the repository to your local machine using the following command:
 ```bash
@@ -26,7 +26,7 @@ git clone https://github.com/Warren-SJ/Flower-Stock-Exchange.git
 ```
 Alternatively, you can download the repository as a zip file and extract it to a directory of your choice.
 
-2. If Visual Studio is installed, open the solution file `Flower Stock Exchange.sln` in Visual Studio and run the program. Run in release mode for better performance.
+2. If Visual Studio is installed, open the solution file `Flower-Stock-Exchange-UI.sln` in Visual Studio and run the program. Run in release mode for better performance.
 
 3. If Visual Studio is not installed and another IDE is used, create a project and add the source files to the project. Compile and run the program.
 
