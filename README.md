@@ -26,15 +26,15 @@ git clone https://github.com/Warren-SJ/Flower-Stock-Exchange.git
 ```
 Alternatively, you can download the repository as a zip file and extract it to a directory of your choice.
 
-2. If Visual Studio is installed, open the solution file `Flower-Stock-Exchange-UI.sln` in Visual Studio and run the program. Run in release mode for better performance.
+2. If Visual Studio is installed, open the solution file Flower-Stock-Exchange-UI.sln in Visual Studio. Select either Debug or Release mode, and run the program. Running in Release mode is recommended for better performance. If Visual Studio is not installed, it can be downloaded from Microsoft's official website [here](https://visualstudio.microsoft.com/downloads/)
 
-3. If Visual Studio is not installed and another IDE is used, create a project and add the source files to the project. Compile and run the program.
+3. If you are using a different IDE, create a new project, add all source files (`main.cpp`, `account_entry.cpp`, etc.), and configure any dependencies or settings required. Compile and run the program.
 
 4. If an IDE is not used, compile the program using the following command:
 ```bash
 g++ -o Flower_Stock_Exchange main.cpp account_entry.cpp account.cpp logic.cpp order_book.cpp orders.cpp
 ```
-**Note**: You need to have g++ installed on your machine to compile the program. If you are using a different compiler, replace `g++` with the appropriate command.
+**Note**: You need `g++` installed to use this command. If you’re on Windows, you may need MinGW or a compatible compiler to run this command.
 
 5. Enter the absolute path of the orders file when prompted. The python script names `data_generation.py` is provided to generate a random orders file. Number of orders and error probability can be adjusted in the script.
 
