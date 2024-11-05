@@ -17,12 +17,12 @@
 
 using namespace std;
 
-vector<string> flowers = {"Rose", "Lavender", "Lotus", "Tulip", "Daisy", "Orchid"};
+vector<string> flowers = { "Rose", "Lavender", "Lotus", "Tulip", "Daisy", "Orchid" };
 
 unordered_map<string, account, AccountHash, AccountEqual>
-process_orders(const orderStatus &orders, const string &path) {
+process_orders(const orderStatus& orders, const string& path) {
     auto start_time = chrono::system_clock::now();
-    ofstream out(path + "/execution_rep.csv");
+    ofstream out(path + "_execution_rep.csv");
     if (!out.is_open()) {
         cerr << "Error opening file for writing" << endl;
         return {};
@@ -31,12 +31,13 @@ process_orders(const orderStatus &orders, const string &path) {
     out << "Order ID, Client Order ID, Instrument, Side, Exec Status, Quantity, Price, Reason, Time" << endl;
     unordered_map<string, account, AccountHash, AccountEqual> order_book;
     vector<string> client_order_id_history;
-    for (const auto &row: orders.orders) {
-        const std::string &client_order_id = row[0];
+    for (const auto& row : orders.orders) {
+        const std::string& client_order_id = row[0];
         string instrument = row[1];
         int side;
         int quantity;
         double price;
+        ++order_number;
         if (row.size() < 5) {
             out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << "N/A" << ", "
                 << "Reject" << ", " << "N/A" << ", " << "N/A" << ',' << "Incomplete row,"
@@ -46,7 +47,8 @@ process_orders(const orderStatus &orders, const string &path) {
         }
         try {
             side = stoi(row[2]);
-        } catch (exception &e) {
+        }
+        catch (exception& e) {
             out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << row[2] << ", "
                 << "Reject" << ", " << row[3] << ", " << row[4] << ',' << "Invalid side,"
                 << getCurrentTimeFormatted()
@@ -55,7 +57,8 @@ process_orders(const orderStatus &orders, const string &path) {
         }
         try {
             quantity = stoi(row[3]);
-        } catch (exception &e) {
+        }
+        catch (exception& e) {
             out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << side << ", "
                 << "Reject" << ", " << row[3] << ", " << row[4] << ',' << "Invalid size,"
                 << getCurrentTimeFormatted()
@@ -64,7 +67,8 @@ process_orders(const orderStatus &orders, const string &path) {
         }
         try {
             price = stod(row[4]);
-        } catch (exception &e) {
+        }
+        catch (exception& e) {
             out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << side << ", "
                 << "Reject" << ", " << row[3] << ", " << row[4] << ',' << "Invalid price,"
                 << getCurrentTimeFormatted()
@@ -115,10 +119,9 @@ process_orders(const orderStatus &orders, const string &path) {
         }
 
         double new_price;
-        auto &acc = order_book.emplace(instrument,
-                                       account(instrument)).first->second; // Get reference to the account
+        auto& acc = order_book.emplace(instrument,
+            account(instrument)).first->second; // Get reference to the account
         string previous_order_id;
-        ++order_number;
         bool added = false;
 
         if (side == 1) { // If it is a buy entry
@@ -130,21 +133,22 @@ process_orders(const orderStatus &orders, const string &path) {
                     if (acc.getSellEntries().front().getQuantity() > quantity) {
                         out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", "
                             << side
-                            << ", " << "Fill" << ", " <<  quantity << ", " << new_price << ',' << ','
+                            << ", " << "Fill" << ", " << quantity << ", " << new_price << ',' << ','
                             << getCurrentTimeFormatted() << endl;
                         out << "Ord" << acc.getSellEntries().front().getOrderID() << ", "
                             << acc.getSellEntries().front().getClientOrderID() << ", " << instrument << ", " << 2
                             << ", " << "PFill" << ", " << quantity << ", " << new_price << ',' << ','
                             << getCurrentTimeFormatted() << endl;
                         acc.replaceEntry(account_entry(acc.getSellEntries().front().getClientOrderID(),
-                                                       acc.getSellEntries().front().getOrderID(),
-                                                       acc.getSellEntries().front().getPrice(),
-                                                       acc.getSellEntries().front().getQuantity() - quantity), 2);
+                            acc.getSellEntries().front().getOrderID(),
+                            acc.getSellEntries().front().getPrice(),
+                            acc.getSellEntries().front().getQuantity() - quantity), 2);
                         account_entry entry(client_order_id, order_number, new_price,
-                                             quantity);
+                            quantity);
                         acc.addBuyEntry(entry);
                         quantity = 0;
-                    } else if (acc.getSellEntries().front().getQuantity() == quantity) {
+                    }
+                    else if (acc.getSellEntries().front().getQuantity() == quantity) {
                         out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", "
                             << side
                             << ", " << "Fill" << ", " << quantity << ", " << new_price << ',' << ','
@@ -155,7 +159,8 @@ process_orders(const orderStatus &orders, const string &path) {
                             << getCurrentTimeFormatted() << endl;
                         acc.popFrontSellEntries();
                         quantity = 0;
-                    } else {
+                    }
+                    else {
                         out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", "
                             << side
                             << ", " << "PFill" << ", " << acc.getSellEntries().front().getQuantity() << ", "
@@ -168,7 +173,8 @@ process_orders(const orderStatus &orders, const string &path) {
                         quantity -= acc.getSellEntries().front().getQuantity();
                         acc.popFrontSellEntries();
                     }
-                } else {
+                }
+                else {
                     if (!added) {
                         out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << side
                             << ", " << "New" << ", " << quantity << ", " << price << ',' << ','
@@ -190,9 +196,10 @@ process_orders(const orderStatus &orders, const string &path) {
                 account_entry entry(client_order_id, order_number, price, quantity);
                 acc.addBuyEntry(entry);
             }
-        } else { // If it is a sell entry
+        }
+        else { // If it is a sell entry
             while (!acc.getBuyEntries().empty() &&
-                   quantity > 0) { // If the top sell entry is less than or equal to the new price
+                quantity > 0) { // If the top sell entry is less than or equal to the new price
                 // Execute the trade
                 if (price <= acc.getBuyEntries().front().getPrice()) {
                     added = true;
@@ -206,16 +213,17 @@ process_orders(const orderStatus &orders, const string &path) {
                         out << "Ord" << acc.getBuyEntries().front().getOrderID() << ", "
                             << acc.getBuyEntries().front().getClientOrderID() << ", " << instrument << ", " << 1
                             << ", "
-                            << "Fill" << ", " <<  quantity << ", "
+                            << "Fill" << ", " << quantity << ", "
                             << new_price << ',' << ',' << getCurrentTimeFormatted() << endl;
                         acc.replaceEntry(account_entry(acc.getBuyEntries().front().getClientOrderID(),
-                                                       acc.getBuyEntries().front().getOrderID(),
-                                                       acc.getBuyEntries().front().getPrice(),
-                                                       acc.getBuyEntries().front().getQuantity() - quantity), 1);
+                            acc.getBuyEntries().front().getOrderID(),
+                            acc.getBuyEntries().front().getPrice(),
+                            acc.getBuyEntries().front().getQuantity() - quantity), 1);
                         account_entry entry(client_order_id, order_number, price, quantity);
                         acc.addSellEntry(entry);
                         quantity = 0;
-                    } else if (acc.getBuyEntries().front().getQuantity() == quantity) {
+                    }
+                    else if (acc.getBuyEntries().front().getQuantity() == quantity) {
                         out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", "
                             << side
                             << ", " << "Fill" << ", " << quantity << ", " << new_price << ',' << ',' << getCurrentTimeFormatted()
@@ -227,7 +235,8 @@ process_orders(const orderStatus &orders, const string &path) {
                             << getCurrentTimeFormatted() << endl;
                         acc.popFrontBuyEntries();
                         quantity = 0;
-                    } else {
+                    }
+                    else {
                         out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", "
                             << side
                             << ", " << "PFill" << ", " << acc.getBuyEntries().front().getQuantity() << ", "
@@ -242,7 +251,8 @@ process_orders(const orderStatus &orders, const string &path) {
                         quantity -= acc.getBuyEntries().front().getQuantity();
                         acc.popFrontBuyEntries();
                     }
-                } else {
+                }
+                else {
                     if (!added) {
                         out << "Ord" << order_number << ", " << client_order_id << ", " << instrument << ", " << side
                             << ", " << "New" << ", " << quantity << ", " << price << ',' << ','

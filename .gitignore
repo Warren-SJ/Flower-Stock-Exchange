@@ -22,3 +22,6 @@
 *.dll
 /UI
 /.idea
+/x64
+/Flower-S.7cbd83c4
+/.vs

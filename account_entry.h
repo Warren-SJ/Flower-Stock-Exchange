@@ -1,9 +1,4 @@
-//
-// Created by warren on 01-Oct-24.
-//
-
-#ifndef ACCOUNT_ENTRY_H
-#define ACCOUNT_ENTRY_H
+#pragma once
 
 #include <string>
 
@@ -25,6 +20,3 @@ private:
     double price;
     int quantity;
 };
-
-#endif  // ACCOUNT_ENTRY_H
-

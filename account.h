@@ -1,10 +1,4 @@
-//
-// Created by warren on 01-Oct-24.
-//
-
-#ifndef FLOWER_STOCK_EXCHANGE_ACCOUNT_H
-#define FLOWER_STOCK_EXCHANGE_ACCOUNT_H
-
+#pragma once
 #include <vector>
 #include <string>
 
@@ -29,7 +23,7 @@ public:
     void popFrontSellEntries();
 
 
-    void replaceEntry(const account_entry &entry, int side);
+    void replaceEntry(const account_entry& entry, int side);
 
 private:
     string instrument;
@@ -43,6 +37,3 @@ private:
 
 };
 
-
-
-#endif //FLOWER_STOCK_EXCHANGE_ACCOUNT_H
